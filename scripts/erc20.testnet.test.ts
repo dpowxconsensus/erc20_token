@@ -7,11 +7,14 @@ import config from "../constants/config";
 
 async function main() {
   const localChain = "polygonmumbai";
-  const remoteChain = "goerli";
+  // const remoteChain = "goerli";
+  const remoteChain = "bsctestnet";
   const jsonURLLocalChain =
     "https://polygon-mumbai.g.alchemy.com/v2/mTfNmVbF3-tovNs2n5vUpUzy4BfXAVcg";
-  const jsonURLRemoteChain =
-    "https://goerli.infura.io/v3/f4d139222fce4c03963c4145d0a30260";
+  // const jsonURLRemoteChain =
+  //   "https://goerli.infura.io/v3/f4d139222fce4c03963c4145d0a30260";
+
+  const jsonURLRemoteChain = "https://data-seed-prebsc-1-s1.binance.org:8545/";
   const localChainId = config[localChain].chainId;
   const remoteChainId = config[remoteChain].chainId;
   const localChainType = config[localChain].chainType;
@@ -59,7 +62,14 @@ async function main() {
       .balanceOf(signer.address);
     // let's transfer token token from src to dst
     const expiryDurationInSeconds = 0; // for infinity
-    const destGasPrice = await remoteChainProvider.getGasPrice();
+    const destGasPrice = (await remoteChainProvider.getGasPrice()).mul(26);
+    // console.log(destGasPrice);
+    // console.log(ethers.utils.formatUnits(destGasPrice, "gwei"));
+
+    // return;
+
+    // .div(2);
+
     const to = signer.address;
     const amount = ethers.BigNumber.from("1000000000000000000");
     const tx = await erc20TokenSrcContract
@@ -72,7 +82,7 @@ async function main() {
         to,
         amount,
         {
-          gasLimit: 100000,
+          gasLimit: 500000,
         }
       );
     console.log("Crosschain Transfer: tx sent with hash ", tx.hash);

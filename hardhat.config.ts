@@ -1,3 +1,5 @@
+import { HardhatUserConfig } from "hardhat/config";
+
 import dotenv from "dotenv";
 // require("hardhat-contract-sizer");
 require("@nomiclabs/hardhat-waffle");
@@ -11,17 +13,8 @@ require("@openzeppelin/hardhat-upgrades");
 import type { NetworkUserConfig } from "hardhat/types";
 dotenv.config();
 
-task(
-  "accounts",
-  "Prints the list of accounts",
-  async (taskArgs: any, hre: any) => {
-    const accounts = await hre.ethers.getSigners();
-
-    for (const account of accounts) {
-      console.log(account.address);
-    }
-  }
-);
+import "@nomiclabs/hardhat-etherscan";
+import "./tasks/enrollContract";
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
